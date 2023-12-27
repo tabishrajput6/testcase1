@@ -1,0 +1,50 @@
+using System;
+using System.IO;
+
+class Program
+{
+    static void Main()
+    {
+        try
+        {
+            // Replace these paths with the actual paths of your log files and the desired output path
+            string[] logFilePaths = { "C:\\Users\\rahul\\Downloads\\Sample1.txt", "C:\\Users\\rahul\\Downloads\\Sample2.txt",
+                "C:\\Users\\rahul\\Downloads\\Sample3.txt","C:\\Users\\rahul\\Downloads\\Sample4.txt" };
+            string mergedLogFilePath = "C:\\Users\\rahul\\Downloads\\FinalLog.txt";
+
+            MergeLogFiles(logFilePaths, mergedLogFilePath);
+
+            Console.WriteLine("Log files merged successfully.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred: {ex.Message}");
+        }
+    }
+
+    static void MergeLogFiles(string[] logFilePaths, string mergedLogFilePath)
+    {
+        using (StreamWriter mergedLogWriter = new StreamWriter(mergedLogFilePath))
+        {
+            foreach (string logFilePath in logFilePaths)
+            {
+                if (File.Exists(logFilePath))
+                {
+                    using (StreamReader logReader = new StreamReader(logFilePath))
+                    {
+                        string line;
+                        while ((line = logReader.ReadLine()) != null)
+                        {
+                            // Write each line from the current log file to the merged log file
+                            mergedLogWriter.WriteLine(line);
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"File not found: {logFilePath}");
+                }
+            }
+        }
+    }
+}
